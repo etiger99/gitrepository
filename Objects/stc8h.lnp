@@ -1,0 +1,8 @@
+".\Objects\main.obj",
+".\Objects\lcd1602.obj",
+".\Objects\lcd12864.obj",
+".\Objects\I2C.obj",
+".\Objects\ISP.obj",
+".\Objects\clock.obj" 
+TO ".\Objects\stc8h" 
+PRINT(".\Listings\stc8h.m51") RAMSIZE(256) 

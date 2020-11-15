@@ -1,0 +1,107 @@
+C51 COMPILER V9.54   MAIN                                                                  11/14/2020 22:56:27 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE user\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\devices;.\user;.\sys
+                    -tem) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "stc8h_conf.h"
+   2          
+   3          
+   4          unsigned char   DIS1[] = {"    电子技术    "};
+   5          unsigned char   DIS2[] = {"    STC8H8K     "};
+   6          
+   7          /**************主函数***********************/
+   8          void main ()
+   9          { 
+  10   1        unsigned char i = 0;
+  11   1        
+  12   1        P0M0 = 0x00;
+  13   1        P0M1 = 0x00;
+  14   1        
+  15   1        P2M0 = 0x00;
+  16   1        P2M1 = 0x00;
+  17   1      
+  18   1        P3M0 = 0x00;
+  19   1        P3M1 = 0x00;
+  20   1        
+  21   1        P4M0 = 0x00;//0x20;  //0010 0000
+  22   1        P4M1 = 0x00;  //0000 0000
+  23   1        
+  24   1        L1P45RE = 1;
+  25   1        L2P46GR = 1;
+  26   1       
+  27   1        Lcd12864_Screen_Init();     //设定液晶工作方式
+  28   1        Lcd12864_Write_Cmd(0x80);
+  29   1        Lcd12864_Write_Data('A');
+  30   1          delay1ms();
+  31   1          delay1ms();
+  32   1        Lcd12864_Write_Cmd(0x90);
+  33   1        for(i=0;i<16;i++)
+  34   1        {
+  35   2          Lcd12864_Write_Data(DIS2[i]);
+  36   2          delay1ms();
+  37   2          delay1ms();
+  38   2          
+  39   2        }
+  40   1        
+  41   1          Lcd12864_Write_Cmd(0x88);
+  42   1        for(i=0;i<16;i++)
+  43   1        {
+  44   2          Lcd12864_Write_Data(DIS1[i]);
+  45   2          delay1ms();
+  46   2          delay1ms();
+  47   2          
+  48   2        }
+  49   1            Lcd12864_Write_Cmd(0x98);
+  50   1        for(i=0;i<16;i++)
+  51   1        {
+  52   2          Lcd12864_Write_Data(DIS2[i]);
+  53   2          delay1ms();
+  54   2          delay1ms();
+C51 COMPILER V9.54   MAIN                                                                  11/14/2020 22:56:27 PAGE 2   
+
+  55   2          
+  56   2        }
+  57   1      
+  58   1        for(i=0;i<200;i++)  
+  59   1        delay1ms();
+  60   1        for(i=0;i<200;i++)  
+  61   1        delay1ms();
+  62   1          for(i=0;i<200;i++)  
+  63   1        delay1ms();
+  64   1          for(i=0;i<200;i++)  
+  65   1        delay1ms();
+  66   1          for(i=0;i<200;i++)  
+  67   1        delay1ms();
+  68   1          for(i=0;i<200;i++)  
+  69   1        delay1ms();
+  70   1      
+  71   1        
+  72   1        
+  73   1        while(1){
+  74   2            
+  75   2          //L1P45RE = 0;  
+  76   2          delay10us();  
+  77   2          L1P45RE = 1;  
+  78   2          delay10us();
+  79   2        
+  80   2        }
+  81   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    321    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     34       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

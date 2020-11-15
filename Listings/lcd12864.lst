@@ -1,0 +1,175 @@
+C51 COMPILER V9.54   LCD12864                                                              11/14/2020 22:56:28 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE LCD12864
+OBJECT MODULE PLACED IN .\Objects\lcd12864.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE devices\lcd12864.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(.\devices;.\use
+                    -r;.\system) DEBUG OBJECTEXTEND PRINT(.\Listings\lcd12864.lst) TABS(2) OBJECT(.\Objects\lcd12864.obj)
+
+line level    source
+
+   1          #include "lcd12864.h"
+   2          #include "stc8h_conf.h"
+   3          
+   4          
+   5          /******************************************************************************/
+   6          // 函数名称：Lcd12864_Busy_Check 
+   7          // 函数功能：LCD1602忙信号检查 
+   8          /******************************************************************************/
+   9          void Lcd12864_Busy_Check(void){
+  10   1        unsigned char tmp;
+  11   1      
+  12   1        do{
+  13   2          RS = 0;
+  14   2          RW = 1;
+  15   2          EN = 0;
+  16   2          EN = 1;
+  17   2          L1P45RE = 1;
+  18   2          delayNOP();
+  19   2          tmp = lcdPort;
+  20   2          L1P45RE = 0;
+  21   2          EN = 0;
+  22   2          delayNOP();
+  23   2        }while(tmp&0x80); 
+  24   1        
+  25   1      }
+  26          //
+  27          
+  28          
+  29          
+  30          //
+  31          /******************************************************************************/
+  32          // 函数名称：Lcd12864_Screen_Init 
+  33          // 函数功能：LCD12864初始化
+  34          /******************************************************************************/
+  35          void Lcd12864_Screen_Init(){
+  36   1        
+  37   1        RST = 0;
+  38   1        delay1ms();
+  39   1        RST = 1;
+  40   1        
+  41   1        //Lcd12864_Write_Cmd(0x34);//使用扩充指令集
+  42   1        delay1ms();
+  43   1        Lcd12864_Write_Cmd(0x30);//使用基本指令集
+  44   1        delay1ms();
+  45   1        Lcd12864_Write_Cmd(0x0c); //显示开，关光标
+  46   1        delay1ms();
+  47   1        Lcd12864_Write_Cmd(0x01);//清屏
+  48   1        delay1ms();
+  49   1        
+  50   1        //Lcd12864_Write_Cmd(0x06);//显示光标移动设置
+  51   1      
+  52   1      
+  53   1      }
+  54          //
+C51 COMPILER V9.54   LCD12864                                                              11/14/2020 22:56:28 PAGE 2   
+
+  55          
+  56          
+  57          
+  58          //
+  59          /******************************************************************************/
+  60          // 函数名称：Lcd12864_Write_Cmd 
+  61          // 输入参数：cmd
+  62          // 输出参数：无 
+  63          // 函数功能：LCD12864发送命令
+  64          //  第一行第一位    cmd=0x80;  
+  65          //  第二行第一位    cmd=0x90;
+  66          //  第三行第一位    cmd=0x88;
+  67          //  第四行第一位    cmd=0x98;
+  68          /******************************************************************************/
+  69          void Lcd12864_Write_Cmd(unsigned char cmd){
+  70   1        
+  71   1        Lcd12864_Busy_Check();//busycheck
+  72   1      //  PSB = 1;
+  73   1        RS = 0;
+  74   1        RW = 0;
+  75   1        EN = 0;
+  76   1        _nop_();
+  77   1        EN = 1; 
+  78   1        
+  79   1        delayNOP();
+  80   1        
+  81   1        lcdPort = cmd;
+  82   1        
+  83   1        delayNOP();
+  84   1        
+  85   1        EN = 1;
+  86   1      
+  87   1        delayNOP();
+  88   1      
+  89   1        EN = 0; 
+  90   1      }
+  91          //
+  92          
+  93          
+  94          
+  95          //
+  96          /******************************************************************************/
+  97          // 函数名称：Lcd12864_Write_Data 
+  98          // 输入参数：Data-写入数据
+  99          // 输出参数：无 
+ 100          // 函数功能：LCD12864写一个字节数据
+ 101          /******************************************************************************/
+ 102          void Lcd12864_Write_Data(unsigned char Data){
+ 103   1        Lcd12864_Busy_Check();//busycheck 
+ 104   1        
+ 105   1      //  PSB = 1;
+ 106   1        RS = 1;
+ 107   1        RW = 0;
+ 108   1        EN = 0;
+ 109   1      
+ 110   1        EN = 1;
+ 111   1        delayNOP();
+ 112   1        
+ 113   1        lcdPort = Data;
+ 114   1        delayNOP();
+ 115   1        EN = 0;
+ 116   1          
+C51 COMPILER V9.54   LCD12864                                                              11/14/2020 22:56:28 PAGE 3   
+
+ 117   1      }
+ 118          
+ 119          //
+ 120          
+ 121          
+ 122          
+ 123          
+ 124          /******************************************************************************/
+ 125          // 函数名称：Lcd12864_Show_Ascii_Symbol 
+ 126          // 函数功能：LCD12864显示ASCII码字符
+ 127          /******************************************************************************/
+ 128          //void Lcd12864_Show_Specific_Symbol(void){
+ 129          //  unsigned char i;
+ 130          //  Lcd12864_Write_Cmd(0x01);//清屏
+ 131          //  for(i=0;i<32;i++){
+ 132          //    Lcd12864_Write_Cmd(0x80+i); //显示位置
+ 133          //    Lcd12864_Write_Data(0x02+i);//显示内容  
+ 134          //  } 
+ 135          //}
+ 136          
+ 137          
+ 138          //专门清屏
+ 139          //void  clr_screen(){
+ 140             //Lcd12864_Write_Cmd(0x34);      //扩充指令操作
+ 141              //delay1ms();  
+ 142             //Lcd12864_Write_Cmd(0x30);      //基本指令操作
+ 143            //  delay1ms();
+ 144            // Lcd12864_Write_Cmd(0x01);      //清屏 
+ 145            //    delay1ms();
+ 146              
+ 147          //}
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    126    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
